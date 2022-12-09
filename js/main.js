@@ -15,7 +15,6 @@ const getRandomNumbeOfRange = (min, max) => {
   }
 
   // вывод случайного числа из диапазона
-
   const arr = [];
   arr.length = max-min+1;
   const rand = Math.floor(Math.random() * arr.length);
@@ -39,10 +38,11 @@ const getMatchOfTextLengt = (text, maxLength) => {
 getMatchOfTextLengt('hello its checking message', 100);
 
 
-////////////////////////////////////////////////////////////////////////////////
-const photoAmount=25; // количество фото
-const commentAmount = () => {return getRandomNumbeOfRange(0,3)}; // случайное кол-во комметариев от 0 до 3х к каждому фото
-const description = ['дальние дали', 'ближние дали', 'ближние ближни']; // описания фото
+//  задача 3. генерация 25 фотографий (дз 3.11. Больше деталей)
+
+const PHOTO_COUNT=25; // количество фото
+const commentAmount = () => {return getRandomNumbeOfRange(1,3)}; // случайное кол-во комметариев от min до max включительно, к каждому фото
+const description = ['дальние дали', 'ближние дали', 'дальние ближни', 'ближние ближни']; // описания фото
 const names = ['Костя','Гена','Стас','Гаврила','Леха']; // имена авторов комментов
 const messages = [
   'Всё отлично!',
@@ -53,16 +53,26 @@ const messages = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ]; //  сообщения авторов комментариев
 
+const likes = {
+  MIN:15,
+  MAX:200,
+} // диапазон количества лайков
+
+const avatars = {
+  MIN:1,
+  MAX:6,
+} // диапазон количества аватарок
 
 const createComments = (commentNum) => {
   const comments = [];
   for (let i=1;i<=commentNum; i++){
-    const randomId = getRandomNumbeOfRange(1,photoAmount);
-    const randomAvatar = `img/avatar-${getRandomNumbeOfRange(1,6)}.svg`;
+    // const randomId = getRandomNumbeOfRange(1,PHOTO_COUNT); // генерация случайных чисел в диапазоне не страхует от повторений id. добавлен алгоритм присвоения id после формирования всех комментариев
+    const randomAvatar = `img/avatar-${getRandomNumbeOfRange(avatars.MIN,avatars.MAX)}.svg`;
     const randomMessage = messages[getRandomNumbeOfRange(0,messages.length-1)];
     const randomName = names[getRandomNumbeOfRange(0,names.length-1)];
     const comment = {
-      id: randomId,
+      // id: randomId, // генерация случайных чисел в диапазоне не страхует от повторений id. добавлен алгоритм присвоения id после формирования всех комментариев
+      id: null,
       avatar: randomAvatar,
       message: randomMessage,
       name: randomName,
@@ -77,24 +87,45 @@ const createComments = (commentNum) => {
 
 const createPhotos = (photosNum) => {
   const photos = [];
+  let commentId = 1;
   for (let i = 1; i<=photosNum; i++){
-    const randomId = getRandomNumbeOfRange(1,photoAmount);
-    const randomUrl = `photos/${getRandomNumbeOfRange(1,photoAmount)}.jpg`;
+    const id = i;
+    const url = `photos/${i}.jpg`;
     const randomDescription = description[getRandomNumbeOfRange(0,description.length-1)];
-    const randomLikes = getRandomNumbeOfRange(15,200);
+    const randomLikes = getRandomNumbeOfRange(likes.MIN,likes.MAX);
     const photo = {
-      id: randomId,
-      url: randomUrl,
+      id: id,
+      url: url,
       description: randomDescription,
       likes:randomLikes,
       comments:createComments(commentAmount()),
     }
     photos.push(photo);
   }
+
+  // подсчет количества комментариев ко всем фото (опционально)
+  let commentsCounter = photos.reduce((totalComments, photo)=>{
+    totalComments+=photo.comments.length;
+    return totalComments;
+  },0);
+  console.log(commentsCounter);
+
+  // замена изначального id = null на id с числом после формирования всех комментариев
+
+  photos.forEach(photo => {
+    photo.comments.forEach(comments =>{
+      comments.id=commentId;
+      commentId++;
+    });
+  });
+
   return photos;
 };
 
-console.log(createPhotos(photoAmount));
+const result = createPhotos(PHOTO_COUNT);
+console.log(result);
+
+
 
 
 
