@@ -1,4 +1,5 @@
-export {getRandomNumbeOfRange, getMatchOfTextLengt};
+export {getRandomNumbeOfRange, makeUniqueRandomIntGenerator};
+
 
 
 // задача 1. Функция, возвращающая случайное целое число из переданного диапазона включительно.
@@ -34,5 +35,32 @@ const getRandomNumbeOfRange = (min, max) => {
 const getMatchOfTextLengt = (text, maxLength) => {
   return text.length <= maxLength ? true : false;
 };
+
+
+/*
+  ЗАДАЧА:
+  Напишите функцию, каждый вызов который будет генерировать случайные числа
+  в переданном диапазоне, но так, чтобы они не повторялись,
+  пока не будут перебраны все числа из этого промежутка.
+*/
+
+
+const makeUniqueRandomIntGenerator = (min, max) => {
+  const previous = [];
+  return () =>{
+    if (previous.length<max-min+1){
+      let current = getRandomNumbeOfRange(min, max);
+      while(previous.includes(current)){
+        current = getRandomNumbeOfRange(min, max);
+      }
+      previous.push(current);
+      return current;
+    }
+    // return(`интервал от ${min} до ${max} перебран итого ${previous}`);
+  };
+};
+
+
+
 
 

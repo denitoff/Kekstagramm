@@ -1,7 +1,8 @@
-import {createPhotos,PHOTO_COUNT,getMatchOfTextLengt} from './data.js';
+import {createPreviews, createPreviewsWithForEach} from './create-previews.js';
+
+// createPreviews();
+createPreviewsWithForEach();
 
 
-createPhotos(PHOTO_COUNT);
-getMatchOfTextLengt('lala',4);
 
 

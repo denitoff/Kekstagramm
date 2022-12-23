@@ -1,11 +1,15 @@
-import {getRandomNumbeOfRange, getMatchOfTextLengt} from './util.js';
-export {createPhotos, PHOTO_COUNT, getMatchOfTextLengt};
+export {createPhotos, PHOTO_COUNT};
+
+import {getRandomNumbeOfRange, makeUniqueRandomIntGenerator} from './util.js';
+
+
 
 
 
 //  задача 3. генерация 25 фотографий (дз 3.11. Больше деталей)
 
 const PHOTO_COUNT=25; // количество фото
+const uniqUrlNum = makeUniqueRandomIntGenerator(1,PHOTO_COUNT);
 const commentAmount = () => {return getRandomNumbeOfRange(1,3)}; // случайное кол-во комметариев от min до max включительно, к каждому фото
 const description = ['дальние дали', 'ближние дали', 'дальние ближни', 'ближние ближни']; // описания фото
 const names = ['Костя','Гена','Стас','Гаврила','Леха']; // имена авторов комментов
@@ -55,7 +59,7 @@ const createPhotos = (photosNum) => {
   let commentId = 1;
   for (let i = 1; i<=photosNum; i++){
     const id = i;
-    const url = `photos/${i}.jpg`;
+    const url = `photos/${uniqUrlNum()}.jpg`;
     const randomDescription = description[getRandomNumbeOfRange(0,description.length-1)];
     const randomLikes = getRandomNumbeOfRange(likes.MIN,likes.MAX);
     const photo = {
