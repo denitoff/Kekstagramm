@@ -32,9 +32,9 @@ const getRandomNumbeOfRange = (min, max) => {
 
 // Задача 2. Функция для проверки максимальной длины строки. Будет использоваться для проверки длины введённого комментария, но должна быть универсальна
 
-const getMatchOfTextLengt = (text, maxLength) => {
-  return text.length <= maxLength ? true : false;
-};
+// const getMatchOfTextLengt = (text, maxLength) => {
+//   return text.length <= maxLength ? true : false;
+// };
 
 
 /*

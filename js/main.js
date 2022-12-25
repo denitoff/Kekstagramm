@@ -1,7 +1,11 @@
-import {createPreviews, createPreviewsWithForEach} from './create-previews.js';
+import { createPreviewsWithForEach} from './create-previews.js';
 
-// createPreviews();
+
 createPreviewsWithForEach();
+
+
+
+
 
 
 
