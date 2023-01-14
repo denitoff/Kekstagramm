@@ -1,6 +1,6 @@
 import {createPhotos, PHOTO_COUNT} from './data.js';
-export {createPreviewsWithForEach};
-import {createBigPhoto} from './open-preview.js';
+export {createPreviews};
+import {openPreview} from './open-preview.js';
 // задание 5.16. Отрисуй меня полностью (часть 1)
 // На основе временных данных для разработки и шаблона #picture создайте DOM-элементы, соответствующие фотографиям, и заполните их данными:
 // Адрес изображения url подставьте как src изображения.
@@ -22,7 +22,7 @@ const pictures = document.querySelector('.pictures');
 const photosData = createPhotos(PHOTO_COUNT);
 
 
-const createPreviewsWithForEach = () =>{
+const createPreviews = () =>{
   photosData.forEach((onePhotoData)=>{
     const newPreview = emptyPictureTemplate.cloneNode(true);
     const {url, likes, comments} = onePhotoData;
@@ -37,7 +37,7 @@ const createPreviewsWithForEach = () =>{
 
     newPreview.addEventListener('click', (evt) => {
       evt.preventDefault();
-      createBigPhoto(onePhotoData);
+      openPreview(onePhotoData);
     });
 
     fragment.appendChild(newPreview);

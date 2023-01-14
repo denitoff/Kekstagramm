@@ -1,4 +1,4 @@
-export { createBigPhoto };
+export { openPreview };
 
 const bigPictureSection = document.querySelector('.big-picture');
 let bigPictureImg = bigPictureSection.querySelector('.big-picture__img').querySelector('img');
@@ -17,7 +17,7 @@ const bigPictureCloseBtn = bigPictureSection.querySelector('.big-picture__cancel
 
 
 // главная ф-ция
-const createBigPhoto = (onePhotoData) => {
+const openPreview = (onePhotoData) => {
   addDiscription(onePhotoData);
   clearHtmlComments();
   addComments(onePhotoData);
