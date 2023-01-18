@@ -1,6 +1,7 @@
 export {openCloseImgEditForm};
 export {scaleController};
 import '/nouislider/nouislider.js';
+import {getMatchOfTextLengt} from './util.js';
 /* global noUiSlider:readonly */
 
 
@@ -31,11 +32,8 @@ const imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview');
 const textHashtags = imgUploadOverlay.querySelector('.text__hashtags');
 const textDescription = imgUploadOverlay.querySelector('.text__description');
 
-
 let textHashtagsFocus = false;
 let textDescriptionFocus = false;
-
-
 
 
 const openCloseImgEditForm = () =>{
@@ -48,6 +46,9 @@ const openCloseImgEditForm = () =>{
     effectLevelSlider.classList.add('visually-hidden');
     deleteEffectsFromImg();
     effectNone.querySelector('.effect-none').checked = true;
+    textDescription.value='';
+    textHashtags.value='';
+
 
     imgUploadCancelButton.addEventListener('click', (evt)=>{
       evt.preventDefault();
@@ -91,7 +92,7 @@ const openCloseImgEditForm = () =>{
 };
 
 
-
+// сброс фильтров при открытии формы
 const resetScaleFilters = () => {
   for (let i=0; i<SCALE_STEPS.length; i++){
     imgUploadPreview.classList.remove(`scale__${i}`);
@@ -99,7 +100,7 @@ const resetScaleFilters = () => {
 };
 
 
-
+// уменьшение увеличение размера фото
 const scaleController = () =>{
 
   scaleControlSmaller.addEventListener('click', ()=>{
@@ -291,3 +292,116 @@ effectLevelSlider.noUiSlider.on('update', (values, handle)=>{
   }
 
 });
+
+
+// валидация ввода хештега textHashtags
+
+const MAX_HASH_LENGTH = 20;
+const MAX_HASH_NUMBER = 5;
+
+
+textHashtags.addEventListener('input',()=>{
+  let hashTagArr = []
+  let hashTagText = textHashtags.value.toLowerCase();
+
+
+
+  hashTagArr = hashTagText.split(' ');
+
+
+
+
+
+  let hashTagNumber = hashTagText.split('#').length-1;
+
+  if (hashTagText.includes('# ')){
+    textHashtags.setCustomValidity('хеш-тег не может состоять только из одной решётки');
+  }
+
+
+
+  else if (hashTagNumber>MAX_HASH_NUMBER){
+    textHashtags.setCustomValidity('нельзя указать больше пяти хэш-тегов;');
+  }
+
+  else
+  {
+    textHashtags.setCustomValidity('');
+  }
+
+
+  if (hashTagArr.length>=2){
+
+
+    hashTagArr=hashTagArr.filter((element)=> {
+      return (element != '');
+    });
+
+    if (new Set(hashTagArr).size !== hashTagArr.length){
+
+      textHashtags.setCustomValidity('один и тот же хэш-тег не может быть использован дважды;');
+    }
+    
+  }
+
+
+  const SIMBOLS=/[<\->[().^+,'"`|/?~!@#$%^=&*_-]/;
+  //const SIMBOLS=/[^qwertyuiopasdfghjklzxcvbnmёйцукенгшщзхъфывапролджэячсмитьбю0123456789]/;
+
+  hashTagArr.forEach((element)=>{
+
+
+    if (element.length>=MAX_HASH_LENGTH){
+      textHashtags.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку, для разделения хэш-тегов используйте пробел');
+    }
+    else if(element.length>0){
+      if(!element[0].includes('#')) {
+        textHashtags.setCustomValidity('хэш-тег начинается с символа # (решётка)');
+      }
+
+
+
+      else if(element.length>1){
+        let hashTagWithoutHash = element.slice(1);
+
+
+        if(hashTagWithoutHash.match(SIMBOLS)){
+          textHashtags.setCustomValidity('строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.;');
+        }
+      }
+    }
+
+
+  });
+
+  textHashtags.reportValidity();
+});
+
+
+
+// валидация поля ввода комментария
+
+const MAX_COMMENT_LENGTH = 140;
+
+textDescription.addEventListener('input',()=>{
+  textDescription.reportValidity();
+
+  if (!getMatchOfTextLengt(textDescription.value, MAX_COMMENT_LENGTH)){
+
+    textDescription.setCustomValidity('длина комментария не может составлять больше 140 символов');
+  }
+
+  else {
+    textDescription.setCustomValidity('');
+  }
+  textDescription.reportValidity();
+});
+
+
+
+
+
+
+
+
+
