@@ -6,7 +6,8 @@ let likesCount = bigPictureSection.querySelector('.likes-count');
 let commentsCount = bigPictureSection.querySelector('.comments-count');
 let socialCaption = bigPictureSection.querySelector('.social__caption');
 let socialCommentsList = bigPictureSection.querySelector('.social__comments');
-let socialComments = bigPictureSection.querySelectorAll('.social__comment');
+
+
 const newCommentContent = '<img class="social__picture" src="{{аватар}}" alt="{{имя комментатора}}" width="35" height="35"> <p class="social__text">{{текст комментария}}</p>';
 const body = document.querySelector('body');
 
@@ -37,8 +38,10 @@ const addDiscription = (onePhotoData) => {
 
 
 const clearHtmlComments = () => {
+  let socialComments = socialCommentsList.querySelectorAll('.social__comment');
   socialComments.forEach(element => {
     element.remove();
+
   });
 };
 
@@ -54,9 +57,11 @@ const addComments = (onePhotoData) => {
   onePhotoData.comments.forEach( (element) => {
     newCommentImg.src = element.avatar;
     newCommentImg.alt = element.name;
+
     newCommentParagraph.textContent = element.message;
     fragment.appendChild(newComment.cloneNode(true));
     socialCommentsList.appendChild(fragment);
+
   });
 
 };
@@ -79,6 +84,7 @@ const closePhoto = () => {
     if (evt.key==='Escape'||evt.key==='Esc')
       bigPictureSection.classList.add('hidden');
     body.classList.remove('modal-open');
+    clearHtmlComments();
   });
 
 
@@ -86,8 +92,8 @@ const closePhoto = () => {
     evt.preventDefault();
     bigPictureSection.classList.add('hidden');
     body.classList.remove('modal-open');
-
     body.removeEventListener('keydown', ()=>{}); // не уверен, что работает
+    clearHtmlComments();
   });
 
 

@@ -37,7 +37,6 @@ const pictures = document.querySelector('.pictures');
 
 
 const createPreviews = (photosData) =>{
-  
   photosData.forEach((onePhotoData)=>{
     const newPreview = emptyPictureTemplate.cloneNode(true);
     const {url, likes, comments} = onePhotoData;
