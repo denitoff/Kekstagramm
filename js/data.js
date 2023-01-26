@@ -54,6 +54,7 @@ const createComments = (commentNum) => {
 
 
 
+
 const createPhotos = (photosNum) => {
   const photos = [];
   let commentId = 1;
@@ -90,6 +91,8 @@ const createPhotos = (photosNum) => {
 
   return photos;
 };
+
+
 
 
 

@@ -1,6 +1,12 @@
-import {createPhotos, PHOTO_COUNT} from './data.js';
+// import {createPhotos, PHOTO_COUNT} from './data.js';
 export {createPreviews};
 import {openPreview} from './open-preview.js';
+
+
+
+
+
+
 // задание 5.16. Отрисуй меня полностью (часть 1)
 // На основе временных данных для разработки и шаблона #picture создайте DOM-элементы, соответствующие фотографиям, и заполните их данными:
 // Адрес изображения url подставьте как src изображения.
@@ -16,13 +22,22 @@ import {openPreview} from './open-preview.js';
 // 5. добавить фрагмент в разметку
 
 
+
+
 const emptyPictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const fragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
-const photosData = createPhotos(PHOTO_COUNT);
+// const photosData = createPhotos(PHOTO_COUNT);
+// отказываемся от генерации фото, тк данные начинаем получать с сервера
 
 
-const createPreviews = () =>{
+
+
+
+
+
+const createPreviews = (photosData) =>{
+  
   photosData.forEach((onePhotoData)=>{
     const newPreview = emptyPictureTemplate.cloneNode(true);
     const {url, likes, comments} = onePhotoData;
