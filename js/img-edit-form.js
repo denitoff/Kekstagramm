@@ -266,29 +266,35 @@ effectHeat.addEventListener('click',()=>{
 
 effectLevelSlider.noUiSlider.on('update', (values, handle)=>{
 
+
   if (effectChrome.querySelector('.effect-chrome').checked == true){
-    imgUploadPreview.style.cssText = `filter: grayscale(${effectLevelValueInput.value});`;
     effectLevelValueInput.value = values[handle];
+    imgUploadPreview.style.cssText = `filter: grayscale(${effectLevelValueInput.value});`;
+
   }
 
   else if (effectSepia.querySelector('.effect-sepia').checked == true){
-    imgUploadPreview.style.cssText = `filter: sepia(${effectLevelValueInput.value});`;
     effectLevelValueInput.value = values[handle];
+    imgUploadPreview.style.cssText = `filter: sepia(${effectLevelValueInput.value});`;
+
   }
 
   else if (effectMarvin.querySelector('.effect-marvin').checked == true){
-    imgUploadPreview.style.cssText = `filter: invert(${effectLevelValueInput.value}%);`;
     effectLevelValueInput.value = values[handle];
+    imgUploadPreview.style.cssText = `filter: invert(${effectLevelValueInput.value}%);`;
+
   }
 
   else if (effectPhobos.querySelector('.effect-phobos').checked == true){
-    imgUploadPreview.style.cssText = `filter: blur(${effectLevelValueInput.value}px);`;
     effectLevelValueInput.value = values[handle];
+    imgUploadPreview.style.cssText = `filter: blur(${effectLevelValueInput.value}px);`;
+
   }
 
   else if (effectHeat.querySelector('.effect-heat').checked == true){
-    imgUploadPreview.style.cssText = `filter: brightness(${effectLevelValueInput.value});`;
     effectLevelValueInput.value = values[handle];
+    imgUploadPreview.style.cssText = `filter: brightness(${effectLevelValueInput.value});`;
+
   }
 
 });
@@ -341,7 +347,7 @@ textHashtags.addEventListener('input',()=>{
 
       textHashtags.setCustomValidity('один и тот же хэш-тег не может быть использован дважды;');
     }
-    
+
   }
 
 
@@ -357,6 +363,10 @@ textHashtags.addEventListener('input',()=>{
     else if(element.length>0){
       if(!element[0].includes('#')) {
         textHashtags.setCustomValidity('хэш-тег начинается с символа # (решётка)');
+      }
+
+      else if (element=='#'){
+        textHashtags.setCustomValidity('хеш-тег не может состоять только из одной решётки');
       }
 
 
@@ -396,7 +406,6 @@ textDescription.addEventListener('input',()=>{
   }
   textDescription.reportValidity();
 });
-
 
 
 
