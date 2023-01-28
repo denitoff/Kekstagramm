@@ -19,23 +19,25 @@ const getData = (onSuccess, onError) => {
 export {getData}
 
 // отправка данных
-const sentData = () => {
-  fetch('https://23.javascript.pages.academy/kekstagram', {
-    method: 'POST',
-    credentials: 'same-origin',
-    body: new FormData(),
-  })
-
+const sentData = (showSuccess, onFail, formData) => {
+  fetch('https://23.javascript.pages.academy/kekstagram',
+    {
+      method: 'POST',
+      credentials: 'same-origin',
+      body: formData,
+    })
     .then((resp)=>{
       if (resp.ok){
-        return resp.json()
+        showSuccess();
       }
-      else{
-        throw new Error(`The error number is ${resp.status}, error description (optional...) ${resp.statusText}`)
+      else {
+        onFail();
       }
     })
-    .then((respJson)=>{console.log(respJson)})
-    .catch((error)=>{console.log(error)});
+
+    .catch(()=>{
+      onFail();
+    })
 }
 
 export {sentData}

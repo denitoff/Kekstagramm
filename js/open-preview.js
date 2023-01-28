@@ -1,3 +1,5 @@
+import { isEscape } from './util.js';
+
 export { openPreview };
 
 const bigPictureSection = document.querySelector('.big-picture');
@@ -81,7 +83,7 @@ const openPhoto = () => {
 
 const closePhoto = () => {
   body.addEventListener('keydown', (evt)=>{
-    if (evt.key==='Escape'||evt.key==='Esc')
+    if (isEscape(evt))
       bigPictureSection.classList.add('hidden');
     body.classList.remove('modal-open');
     clearHtmlComments();

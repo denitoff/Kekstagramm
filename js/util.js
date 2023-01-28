@@ -61,6 +61,23 @@ const makeUniqueRandomIntGenerator = (min, max) => {
 };
 
 
+// isEscape
 
+const Keys = {
+  ESC:'Esc',
+  ESCAPE:'Escape',
+};
+
+const isEscape = (evt) => {
+
+  if(evt.key == Keys.ESC || evt.key == Keys.ESCAPE) {
+    return true
+  }
+  else {
+    return false
+  }
+}
+
+export{isEscape}
 
 

@@ -1,7 +1,9 @@
 export {openCloseImgEditForm};
 export {scaleController};
 import '/nouislider/nouislider.js';
-import {getMatchOfTextLengt} from './util.js';
+import {getMatchOfTextLengt, isEscape} from './util.js';
+import {showSentDataFormSuccess, showSentDataFormError} from './show-info.js';
+import {sentData} from './fetch-api.js';
 /* global noUiSlider:readonly */
 
 
@@ -11,10 +13,7 @@ const deleteEffectsFromImg = () => {
   });
 };
 
-const Keys = {
-  ESC:'Esc',
-  ESCAPE:'Escape',
-};
+
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
@@ -22,6 +21,9 @@ const imgUploadCancelButton = imgUploadOverlay.querySelector('.img-upload__cance
 const scaleControlSmaller = imgUploadOverlay.querySelector('.scale__control--smaller');
 const scaleControlBigger = imgUploadOverlay.querySelector('.scale__control--bigger');
 const scaleControlValue = imgUploadOverlay.querySelector('.scale__control--value');
+
+const imgUploadForm = document.querySelector('.img-upload__form');
+
 
 const SCALE_STEPS = ['25%', '50%', '75%', '100%'];
 const DEF_SCALE_STEP = SCALE_STEPS.length-1; // шаг по умолчанию - 3, т.е. 100%
@@ -35,6 +37,12 @@ const textDescription = imgUploadOverlay.querySelector('.text__description');
 let textHashtagsFocus = false;
 let textDescriptionFocus = false;
 
+const closeForm = ()=>{
+  imgUploadOverlay.classList.add('hidden');
+  body.classList.remove('modal-open');
+  imgUploadInput.value = '';
+  imgUploadPreview.style.cssText = '';
+}
 
 const openCloseImgEditForm = () =>{
   imgUploadInput.addEventListener('change',()=>{
@@ -52,10 +60,8 @@ const openCloseImgEditForm = () =>{
 
     imgUploadCancelButton.addEventListener('click', (evt)=>{
       evt.preventDefault();
-      imgUploadOverlay.classList.add('hidden');
-      body.classList.remove('modal-open');
-      imgUploadInput.value = '';
-      imgUploadPreview.style.cssText = '';
+      closeForm();
+
     });
 
     // если поле ввода хештега или комментария в фокусе, закрытие окна черех esc заблокировано
@@ -80,11 +86,8 @@ const openCloseImgEditForm = () =>{
 
     body.addEventListener('keydown', (evt)=>{
       if((textHashtagsFocus==false)&&(textDescriptionFocus==false)){
-        if(evt.key == Keys.ESC || evt.key == Keys.ESCAPE){
-          imgUploadOverlay.classList.add('hidden');
-          body.classList.remove('modal-open');
-          imgUploadInput.value = '';
-          imgUploadPreview.style.cssText = '';
+        if(isEscape(evt)){
+          closeForm();
         }
       }
     });
@@ -218,6 +221,7 @@ effectMarvin.addEventListener('click',()=>{
     start: 100,
   });
 
+
 });
 
 effectPhobos.addEventListener('click',()=>{
@@ -265,12 +269,11 @@ effectHeat.addEventListener('click',()=>{
 
 
 effectLevelSlider.noUiSlider.on('update', (values, handle)=>{
-
+  effectLevelValueInput.value = values[handle];
 
   if (effectChrome.querySelector('.effect-chrome').checked == true){
     effectLevelValueInput.value = values[handle];
     imgUploadPreview.style.cssText = `filter: grayscale(${effectLevelValueInput.value});`;
-
   }
 
   else if (effectSepia.querySelector('.effect-sepia').checked == true){
@@ -294,7 +297,6 @@ effectLevelSlider.noUiSlider.on('update', (values, handle)=>{
   else if (effectHeat.querySelector('.effect-heat').checked == true){
     effectLevelValueInput.value = values[handle];
     imgUploadPreview.style.cssText = `filter: brightness(${effectLevelValueInput.value});`;
-
   }
 
 });
@@ -410,6 +412,25 @@ textDescription.addEventListener('input',()=>{
 
 
 
+
+// отправка формы
+
+const editFormSubmit = ( showSuccess, onFail) => {
+  imgUploadForm.addEventListener('submit',(evt)=>{
+
+
+
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+    sentData( showSuccess, onFail, formData)
+    closeForm();
+
+
+
+  });
+};
+
+editFormSubmit(showSentDataFormSuccess, showSentDataFormError)
 
 
 
