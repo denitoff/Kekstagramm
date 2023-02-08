@@ -61,6 +61,7 @@ const makeUniqueRandomIntGenerator = (min, max) => {
 };
 
 
+
 // isEscape
 
 const Keys = {
@@ -79,5 +80,29 @@ const isEscape = (evt) => {
 }
 
 export{isEscape}
+
+
+
+
+// debounce самописный
+
+
+
+
+
+const debounce = (cb, timeout) => {
+
+  let timerStart = false;
+  return () => {
+    if (timerStart) return;
+    cb.apply(this);
+    timerStart = true;
+    setTimeout(() => {timerStart = false;}, timeout);
+  };
+
+};
+
+
+export{debounce};
 
 

@@ -18,6 +18,7 @@ const getData = (onSuccess, onError) => {
 };
 export {getData}
 
+
 // отправка данных
 const sentData = (showSuccess, onFail, formData) => {
   fetch('https://23.javascript.pages.academy/kekstagram',

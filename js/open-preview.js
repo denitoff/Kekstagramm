@@ -43,7 +43,6 @@ const clearHtmlComments = () => {
   let socialComments = socialCommentsList.querySelectorAll('.social__comment');
   socialComments.forEach(element => {
     element.remove();
-
   });
 };
 
