@@ -13,9 +13,10 @@ let socialCommentsList = bigPictureSection.querySelector('.social__comments');
 const newCommentContent = '<img class="social__picture" src="{{аватар}}" alt="{{имя комментатора}}" width="35" height="35"> <p class="social__text">{{текст комментария}}</p>';
 const body = document.querySelector('body');
 
-// то что ниже, временно скрыть по заданию (ф-ция temporaryHidden )
+
 const socialCommentCount = bigPictureSection.querySelector('.social__comment-count');
 const commentLoader = bigPictureSection.querySelector('.comments-loader');
+
 const bigPictureCloseBtn = bigPictureSection.querySelector('.big-picture__cancel');
 
 
@@ -24,7 +25,9 @@ const openPreview = (onePhotoData) => {
   addDiscription(onePhotoData);
   clearHtmlComments();
   addComments(onePhotoData);
-  temporaryHidden();   //временно скрыть согласно заданию
+  //
+  addFiveComments();
+  //
   openPhoto();
   closePhoto();
 };
@@ -58,20 +61,44 @@ const addComments = (onePhotoData) => {
   onePhotoData.comments.forEach( (element) => {
     newCommentImg.src = element.avatar;
     newCommentImg.alt = element.name;
-
     newCommentParagraph.textContent = element.message;
     fragment.appendChild(newComment.cloneNode(true));
     socialCommentsList.appendChild(fragment);
-
   });
 
 };
 
-
-
-const temporaryHidden = () => {
-  socialCommentCount.classList.add('hidden');
-  commentLoader.classList.add('hidden');
+//
+const addFiveComments = () =>{
+  let commentsStep = 5;
+  let clicks = 1;
+  const comments = socialCommentsList.querySelectorAll('.social__comment');
+  const commentsCountOpened = document.querySelector('.comments-count-opened');
+  commentsCountOpened.textContent = '5';
+  if (comments.length>=commentsStep){
+    socialCommentCount.classList.remove('visually-hidden');
+    commentLoader.classList.remove('visually-hidden');
+    for (let i=commentsStep; i<=comments.length-1;i++){
+      comments[i].classList.add('hidden')
+    }
+    commentLoader.addEventListener('click',()=>{
+      clicks++;
+      for (let i=commentsStep; i<commentsStep*clicks;i++){
+        if(i<=comments.length-1){
+          commentsCountOpened.textContent = i+1;
+          comments[i].classList.remove('hidden');
+        }
+        else{
+          commentLoader.classList.add('visually-hidden');
+          break
+        }
+      }
+    });
+  }
+  else{
+    socialCommentCount.classList.add('visually-hidden');
+    commentLoader.classList.add('visually-hidden');
+  }
 };
 
 
