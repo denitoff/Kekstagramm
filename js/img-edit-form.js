@@ -21,6 +21,7 @@ const imgUploadCancelButton = imgUploadOverlay.querySelector('.img-upload__cance
 const scaleControlSmaller = imgUploadOverlay.querySelector('.scale__control--smaller');
 const scaleControlBigger = imgUploadOverlay.querySelector('.scale__control--bigger');
 const scaleControlValue = imgUploadOverlay.querySelector('.scale__control--value');
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 
@@ -30,6 +31,7 @@ const DEF_SCALE_STEP = SCALE_STEPS.length-1; // шаг по умолчанию -
 const DEF_SCALE_VALUE = SCALE_STEPS[DEF_SCALE_STEP]; // значание масштаба при шаге по умолчанию - 100%
 let currentScaleStep;
 const imgUploadPreview = imgUploadOverlay.querySelector('.img-upload__preview');
+const imgUploadImg = imgUploadOverlay.querySelector('.img-upload__img');
 
 const textHashtags = imgUploadOverlay.querySelector('.text__hashtags');
 const textDescription = imgUploadOverlay.querySelector('.text__description');
@@ -57,6 +59,17 @@ const openCloseImgEditForm = () =>{
     textDescription.value='';
     textHashtags.value='';
 
+    //загрузка выбранного фото вместо заглушки-котика
+    const file = imgUploadInput.files[0];
+    const fileName = file.name.toLowerCase();
+    const isCorrectNameOfFile = FILE_TYPES.some((it)=>{return fileName.endsWith(it)})
+    if (isCorrectNameOfFile) {
+      const reader = new FileReader();
+      reader.addEventListener('load', ()=>{
+        imgUploadImg.src = reader.result;
+      })
+      reader.readAsDataURL(file);
+    }
 
     imgUploadCancelButton.addEventListener('click', (evt)=>{
       evt.preventDefault();
